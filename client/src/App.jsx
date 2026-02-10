@@ -42,7 +42,7 @@ const USERS_DATA = [
     { id: "1466230736586805359", insta: "https://www.instagram.com/theworldisnotfair1", badges: ["Nitro", "BoostLevel1"] },
     { id: "1243923826106961946", insta: "https://instagram.com/zxtworm", badges: ["Nitro", "BoostLevel1"] },
     { id: "566460983606771713", insta: "", badges: ["QuestCompleted"] },
-    { id: "1430625080584704123", insta: "", badges: ["Nitro3month", "BoostLevel3", "QuestCompleted"] },
+    { id: "1430625080584704123", insta: "", badges: ["Nitro3months", "BoostLevel3", "QuestCompleted"] },
 ];
 
 const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
