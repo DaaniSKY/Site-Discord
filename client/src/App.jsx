@@ -64,7 +64,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         fetchData();
     }, [userId, manualBadges]);
 
-    // Lógica de movimento 3D
+    // Lógica de movimento 3D (Mouse apenas)
     const handleMouseMove = (e) => {
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
@@ -83,13 +83,12 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         setRotate({ x: 0, y: 0 });
     };
 
-    // Skeleton Responsivo
+    // Skeleton Responsivo e Transparente
     if (!data) return <div className="w-64 h-80 animate-pulse rounded-2xl border-2 border-white/10" />;
 
     return (
         <div 
-            // AQUI ESTAVA O ERRO: Removi 'touch-none'. Agora o scroll funciona.
-            className="relative w-64 h-80 perspective-[1000px] group z-20 cursor-pointer"
+            className="relative w-64 h-80 perspective-[1000px] group z-20 cursor-pointer mb-6 md:mb-0" // Adicionado mb-6 para separar os cards no mobile
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -97,6 +96,9 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
             <div 
                 className={`
                     relative w-full h-full rounded-2xl p-8 flex flex-col items-center
+                    
+                    /* Fundo removido (Transparente) */
+                    bg-transparent
                     
                     /* Borda Transparente */
                     border-2 border-white/20 group-hover:border-white
@@ -114,7 +116,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
                     <img src={data.avatar} className="w-24 h-24 rounded-full border-[3px] border-white/20 group-hover:border-white transition-colors object-cover" alt={data.username} />
                 </div>
                 
-                <h1 className="mt-4 text-white font-bold text-lg tracking-wider lowercase opacity-90 text-center break-words" style={{ transform: 'translateZ(20px)' }}>
+                <h1 className="mt-4 text-white font-bold text-lg tracking-wider lowercase opacity-90 text-center break-words drop-shadow-md" style={{ transform: 'translateZ(20px)' }}>
                     {data.username}
                 </h1>
                 
@@ -134,10 +136,10 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 
                 <div className="flex gap-6 opacity-80 md:opacity-60 group-hover:opacity-100 transition-all duration-300" style={{ transform: 'translateZ(25px)' }}>
                     <a href={`https://discord.com/users/${userId}`} target="_blank" rel="noreferrer" className="hover:scale-125 transition-transform duration-300">
-                        <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" className="w-6 h-6" alt="Discord" />
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" className="w-6 h-6 drop-shadow" alt="Discord" />
                     </a>
                     <a href={instagramUrl} target="_blank" rel="noreferrer" className="hover:scale-125 transition-transform duration-300">
-                        <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" className="w-6 h-6" alt="Instagram" />
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" className="w-6 h-6 drop-shadow" alt="Instagram" />
                     </a>
                 </div>
             </div>
@@ -237,11 +239,15 @@ export default function App() {
     }
 
     return (
-        // Principal alteração: Layout que permite scroll
-        <main className="min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-8 relative select-none bg-transparent pb-40">
+        // CORREÇÃO CRÍTICA AQUI:
+        // 1. justify-start (em vez de center) para não travar o topo
+        // 2. pt-20 (padding no topo)
+        // 3. pb-48 (padding gigante no fundo para o player não cobrir nada)
+        // 4. overflow-y-auto (garante que dá pra rolar)
+        <main className="min-h-screen w-full flex flex-col justify-start items-center relative select-none bg-transparent overflow-x-hidden overflow-y-auto pt-20 pb-48 px-4">
             <BackgroundEffects />
             
-            {/* CONTROLES DE MÚSICA */}
+            {/* CONTROLES DE MÚSICA - Responsivo */}
             <div 
                 className="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group w-[90%] max-w-[400px]"
                 onClick={(e) => e.stopPropagation()} 
@@ -281,7 +287,7 @@ export default function App() {
                 </div>
             </div>
 
-            {/* Grid de Cards */}
+            {/* Grid de Cards - Ajustado espaçamento */}
             <div className="flex flex-wrap justify-center items-center gap-8 w-full max-w-6xl mx-auto relative z-20">
                 {USERS_DATA.map(user => (
                     <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
