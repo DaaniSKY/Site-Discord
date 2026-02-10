@@ -51,6 +51,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // SEU LINK DO RENDER AQUI
                 const res = await fetch(`https://site-discord.onrender.com/user/${userId}`);
                 const json = await res.json();
                 setData({ ...json, badges: manualBadges });
@@ -61,87 +62,67 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         fetchData();
     }, [userId, manualBadges]);
 
-    // Função que calcula a inclinação baseada na posição do mouse
     const handleMouseMove = (e) => {
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
-        // Define a intensidade da rotação (20 graus máximo)
         const rotateX = ((y - centerY) / centerY) * -20; 
         const rotateY = ((x - centerX) / centerX) * 20;
-
         setRotate({ x: rotateX, y: rotateY });
     };
 
     const handleMouseEnter = () => setIsHovering(true);
-    
     const handleMouseLeave = () => {
         setIsHovering(false);
-        // Reseta a posição quando o mouse sai
         setRotate({ x: 0, y: 0 });
     };
 
-    // Skeleton
-    if (!data) return <div className="w-64 h-80 animate-pulse rounded-2xl border-2 border-white/10" />;
+    // Card Skeleton com efeito de vidro
+    if (!data) return <div className="w-64 h-80 animate-pulse rounded-2xl border-2 border-white/10 bg-white/5 backdrop-blur-md" />;
 
     return (
-        // Container principal com a Perspectiva 3D ativada
         <div 
             className="relative w-64 h-80 perspective-[1000px] group z-20 cursor-pointer"
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            
-            {/* O CARTÃO QUE GIRA */}
             <div 
                 className={`
                     relative w-full h-full rounded-2xl p-8 flex flex-col items-center
-                    /* Borda e Sombra */
+                    
+                    /* EFEITO DE VIDRO */
+                    bg-white/5 backdrop-blur-md 
+                    group-hover:bg-white/10
+
+                    /* BORDA */
                     border-2 border-white/20 group-hover:border-white
-                    group-hover:shadow-[0_0_30px_rgba(255,255,255,0.15)]
-                    /* Transição dinâmica: Rápida no hover (pra não travar), Lenta ao sair (suave) */
+                    
+                    /* Transição */
                     transition-all ease-out
                     ${isHovering ? 'duration-75' : 'duration-500'}
                 `}
                 style={{
-                    // Aplica a rotação calculada
                     transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1.02, 1.02, 1.02)`,
-                    transformStyle: 'preserve-3d' // Permite que os filhos (avatar) tenham profundidade
+                    transformStyle: 'preserve-3d'
                 }}
             >
-                
-                {/* Avatar (Com translateZ para sair da carta) */}
                 <div style={{ transform: 'translateZ(30px)' }}>
-                    <img 
-                        src={data.avatar} 
-                        className="w-24 h-24 rounded-full border-[3px] border-white/20 group-hover:border-white transition-colors shadow-lg" 
-                        alt={data.username} 
-                    />
+                    <img src={data.avatar} className="w-24 h-24 rounded-full border-[3px] border-white/20 group-hover:border-white transition-colors" alt={data.username} />
                 </div>
                 
-                {/* Nome */}
-                <h1 
-                    className="mt-4 text-white font-bold text-lg tracking-wider lowercase opacity-90 drop-shadow-md"
-                    style={{ transform: 'translateZ(20px)' }}
-                >
+                <h1 className="mt-4 text-white font-bold text-lg tracking-wider lowercase opacity-90" style={{ transform: 'translateZ(20px)' }}>
                     {data.username}
                 </h1>
                 
-                {/* Badges */}
-                <div 
-                    className="flex gap-3 mt-4 h-[24px] justify-center items-center flex-wrap"
-                    style={{ transform: 'translateZ(15px)' }}
-                >
+                <div className="flex gap-3 mt-4 h-[24px] justify-center items-center flex-wrap" style={{ transform: 'translateZ(15px)' }}>
                     {data.badges.map((badgeKey, index) => (
                         <div key={index} className="w-[22px] h-[22px] flex items-center justify-center">
                             {BADGE_ICONS[badgeKey] ? (
-                                <img src={BADGE_ICONS[badgeKey]} className="w-full h-full object-contain drop-shadow-[0_0_5px_rgba(255,255,255,0.4)]" alt={badgeKey} />
+                                <img src={BADGE_ICONS[badgeKey]} className="w-full h-full object-contain" alt={badgeKey} />
                             ) : (
                                 <div className="w-[8px] h-[8px] bg-white/50 rounded-full animate-pulse" />
                             )}
@@ -149,19 +130,14 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
                     ))}
                 </div>
 
-                {/* Divisória */}
                 <div className="w-full h-px bg-white/10 my-6" style={{ transform: 'translateZ(10px)' }}></div>
 
-                {/* Redes Sociais */}
-                <div 
-                    className="flex gap-6 opacity-60 group-hover:opacity-100 transition-all duration-300"
-                    style={{ transform: 'translateZ(25px)' }} // Botões saltam mais perto
-                >
+                <div className="flex gap-6 opacity-60 group-hover:opacity-100 transition-all duration-300" style={{ transform: 'translateZ(25px)' }}>
                     <a href={`https://discord.com/users/${userId}`} target="_blank" rel="noreferrer" className="hover:scale-125 transition-transform duration-300">
-                        <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" className="w-6 h-6 drop-shadow-md" alt="Discord" />
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" className="w-6 h-6" alt="Discord" />
                     </a>
                     <a href={instagramUrl} target="_blank" rel="noreferrer" className="hover:scale-125 transition-transform duration-300">
-                        <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" className="w-6 h-6 drop-shadow-md" alt="Instagram" />
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" className="w-6 h-6" alt="Instagram" />
                     </a>
                 </div>
             </div>
@@ -170,7 +146,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 };
 
 const BackgroundEffects = memo(() => {
-    const stars = useRef([...Array(500)].map(() => ({
+    const stars = useRef([...Array(80)].map(() => ({
         width: Math.random() * 2 + 'px',
         top: Math.random() * 100 + '%',
         left: Math.random() * 100 + '%',
@@ -183,28 +159,13 @@ const BackgroundEffects = memo(() => {
         <div className="fixed inset-0 pointer-events-none overflow-hidden bg-black" style={{ zIndex: -1 }}>
             <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,118,0.03))] z-10 bg-[length:100%_4px,3px_100%] opacity-50" />
             {stars.current.map((star, i) => (
-                <div 
-                    key={i} 
-                    className="absolute bg-white rounded-full animate-pulse-slow" 
-                    style={{ 
-                        width: star.width, 
-                        height: star.width, 
-                        top: star.top, 
-                        left: star.left, 
-                        opacity: 0.5,
-                        animation: `floatingStars ${star.moveDuration} linear infinite, pulse ${star.duration} ease-in-out infinite`
-                    }} 
+                <div key={i} className="absolute bg-white rounded-full animate-pulse-slow" 
+                    style={{ width: star.width, height: star.width, top: star.top, left: star.left, opacity: 0.5, animation: `floatingStars ${star.moveDuration} linear infinite, pulse ${star.duration} ease-in-out infinite` }} 
                 />
             ))}
             <style dangerouslySetInnerHTML={{ __html: `
-                @keyframes floatingStars {
-                    from { transform: translateY(0); }
-                    to { transform: translateY(-100vh); }
-                }
-                @keyframes pulse {
-                    0%, 100% { opacity: 0.2; }
-                    50% { opacity: 0.8; }
-                }
+                @keyframes floatingStars { from { transform: translateY(0); } to { transform: translateY(-100vh); } }
+                @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
             `}} />
         </div>
     );
@@ -213,11 +174,13 @@ const BackgroundEffects = memo(() => {
 export default function App() {
     const [started, setStarted] = useState(false);
     const [volume, setVolume] = useState(0.4);
+    const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
     const musicName = "Lil Peep - Hellboy";
 
     useEffect(() => {
-        audioRef.current = new Audio('/hellboy_prod_smokeasac_x_yung_cortex_KLICKAUD.mp3');
+        // O caminho '/musica.mp3' busca direto na pasta public
+        audioRef.current = new Audio('/musica.mp3');
         audioRef.current.loop = true;
         audioRef.current.volume = volume;
 
@@ -231,9 +194,23 @@ export default function App() {
 
     const handleStart = () => {
         if (audioRef.current) {
-            audioRef.current.play().catch(e => console.log("Erro:", e));
+            audioRef.current.play()
+                .then(() => setIsPlaying(true))
+                .catch(e => console.log("Erro ao tocar:", e));
         }
         setStarted(true);
+    };
+
+    const togglePlay = () => {
+        if (audioRef.current) {
+            if (isPlaying) {
+                audioRef.current.pause();
+                setIsPlaying(false);
+            } else {
+                audioRef.current.play();
+                setIsPlaying(true);
+            }
+        }
     };
 
     const handleVolumeChange = (e) => {
@@ -260,14 +237,26 @@ export default function App() {
         <main className="min-h-screen w-screen flex items-center justify-center p-8 relative select-none bg-transparent">
             <BackgroundEffects />
             
-            {/* CONTROLES DE MÚSICA */}
+            {/* CONTROLES DE MÚSICA COM EFEITO DE VIDRO */}
             <div 
-                className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 bg-black/60 backdrop-blur-xl border border-white/10 p-4 rounded-xl z-[100] group"
+                className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/30 backdrop-blur-md border border-white/10 p-4 rounded-xl z-[100] group"
                 onClick={(e) => e.stopPropagation()} 
             >
                 <div className="flex items-center gap-3">
-                    <span className="text-[10px] text-white/40 uppercase tracking-widest animate-pulse">Playing:</span>
-                    <span className="text-xs text-white/80 font-medium tracking-wider">{musicName}</span>
+                    <button onClick={togglePlay} className="text-white/80 hover:text-white transition-colors">
+                        {isPlaying ? (
+                            <img src="https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png" className="w-4 h-4" alt="pause" />
+                        ) : (
+                            <img src="https://img.icons8.com/ios-filled/50/ffffff/play--v1.png" className="w-4 h-4" alt="play" />
+                        )}
+                    </button>
+                    
+                    <div className="flex flex-col">
+                        <span className="text-[8px] text-white/40 uppercase tracking-widest">
+                            {isPlaying ? "Playing:" : "Paused:"}
+                        </span>
+                        <span className="text-xs text-white/80 font-medium tracking-wider">{musicName}</span>
+                    </div>
                 </div>
                 
                 <div className="flex items-center gap-3 w-48">
@@ -288,7 +277,6 @@ export default function App() {
                 </div>
             </div>
 
-            {/* Grid de Cards */}
             <div className="flex flex-wrap justify-center items-center gap-8 max-w-6xl mx-auto relative z-20">
                 {USERS_DATA.map(user => (
                     <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
