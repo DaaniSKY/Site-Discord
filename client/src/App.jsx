@@ -51,7 +51,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(`http://localhost:3001/user/${userId}`);
+                const res = await fetch(`https://site-discord.onrender.com/user/${userId}`);
                 const json = await res.json();
                 setData({ ...json, badges: manualBadges });
             } catch (err) {
