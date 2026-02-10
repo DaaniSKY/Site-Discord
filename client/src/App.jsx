@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef, memo } from 'react';
 
-// Importante: A música deve estar na pasta /client/public/musica.mp3
-// O nome do arquivo tem que ser EXATAMENTE igual (cuidado com letras maiúsculas)
+// --- CONFIGURAÇÃO ---
+// Certifique-se que o arquivo 'musica.mp3' está na pasta /client/public/
 
-// --- MAPEAMENTO DE ÍCONES ---
 const BADGE_ICONS = {
     ActiveDeveloper: "https://raw.githubusercontent.com/mezotv/discord-badges/main/assets/activedeveloper.svg",
     BugHunter: "https://raw.githubusercontent.com/mezotv/discord-badges/main/assets/discordbughunter1.svg",
@@ -54,7 +53,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Link do seu Render
+                // Seu Link do Render
                 const res = await fetch(`https://site-discord.onrender.com/user/${userId}`);
                 const json = await res.json();
                 setData({ ...json, badges: manualBadges });
@@ -65,6 +64,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         fetchData();
     }, [userId, manualBadges]);
 
+    // Lógica de movimento 3D (só afeta PC/Mouse)
     const handleMouseMove = (e) => {
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
@@ -83,7 +83,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         setRotate({ x: 0, y: 0 });
     };
 
-    // Skeleton totalmente transparente
+    // Skeleton Responsivo
     if (!data) return <div className="w-64 h-80 animate-pulse rounded-2xl border-2 border-white/10" />;
 
     return (
@@ -92,15 +92,13 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            // No mobile, o toque não vai ativar o 3D agressivo, permitindo scroll
         >
             <div 
                 className={`
                     relative w-full h-full rounded-2xl p-8 flex flex-col items-center
                     
-                    /* --- REMOVIDO EFEITO DE VIDRO/FUNDO --- */
-                    /* Agora é 100% transparente, só a borda aparece */
-                    
-                    /* Borda */
+                    /* Borda Transparente */
                     border-2 border-white/20 group-hover:border-white
                     
                     /* Transição */
@@ -113,10 +111,10 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
                 }}
             >
                 <div style={{ transform: 'translateZ(30px)' }}>
-                    <img src={data.avatar} className="w-24 h-24 rounded-full border-[3px] border-white/20 group-hover:border-white transition-colors" alt={data.username} />
+                    <img src={data.avatar} className="w-24 h-24 rounded-full border-[3px] border-white/20 group-hover:border-white transition-colors object-cover" alt={data.username} />
                 </div>
                 
-                <h1 className="mt-4 text-white font-bold text-lg tracking-wider lowercase opacity-90" style={{ transform: 'translateZ(20px)' }}>
+                <h1 className="mt-4 text-white font-bold text-lg tracking-wider lowercase opacity-90 text-center break-words" style={{ transform: 'translateZ(20px)' }}>
                     {data.username}
                 </h1>
                 
@@ -134,7 +132,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 
                 <div className="w-full h-px bg-white/10 my-6" style={{ transform: 'translateZ(10px)' }}></div>
 
-                <div className="flex gap-6 opacity-60 group-hover:opacity-100 transition-all duration-300" style={{ transform: 'translateZ(25px)' }}>
+                <div className="flex gap-6 opacity-80 md:opacity-60 group-hover:opacity-100 transition-all duration-300" style={{ transform: 'translateZ(25px)' }}>
                     <a href={`https://discord.com/users/${userId}`} target="_blank" rel="noreferrer" className="hover:scale-125 transition-transform duration-300">
                         <img src="https://img.icons8.com/ios-filled/50/ffffff/discord-logo.png" className="w-6 h-6" alt="Discord" />
                     </a>
@@ -148,7 +146,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 };
 
 const BackgroundEffects = memo(() => {
-    const stars = useRef([...Array(500)].map(() => ({
+    const stars = useRef([...Array(80)].map(() => ({
         width: Math.random() * 2 + 'px',
         top: Math.random() * 100 + '%',
         left: Math.random() * 100 + '%',
@@ -181,13 +179,12 @@ export default function App() {
     const musicName = "Lil Peep - Hellboy";
 
     useEffect(() => {
-        // Tenta pegar o arquivo. Se falhar, avisa no console.
         audioRef.current = new Audio('/musica.mp3');
         audioRef.current.loop = true;
         audioRef.current.volume = volume;
         
         audioRef.current.addEventListener('error', (e) => {
-            console.error("ERRO NO PLAYER: Não foi possível carregar '/musica.mp3'. Verifique se o arquivo está na pasta 'public' e se o nome está em minúsculo.", e);
+            console.error("ERRO NO PLAYER: Verifique se 'musica.mp3' está na pasta public.", e);
         });
 
         return () => {
@@ -202,7 +199,7 @@ export default function App() {
         if (audioRef.current) {
             audioRef.current.play()
                 .then(() => setIsPlaying(true))
-                .catch(e => console.log("Erro ao tocar (navegador bloqueou ou arquivo não existe):", e));
+                .catch(e => console.log("Erro ao tocar:", e));
         }
         setStarted(true);
     };
@@ -230,9 +227,9 @@ export default function App() {
 
     if (!started) {
         return (
-            <div className="h-screen w-screen bg-black flex flex-col items-center justify-center cursor-pointer select-none relative" onClick={handleStart}>
+            <div className="h-screen w-full bg-black flex flex-col items-center justify-center cursor-pointer select-none relative overflow-hidden" onClick={handleStart}>
                 <BackgroundEffects />
-                <span className="relative z-20 text-white/60 font-light text-[10px] animate-pulse tracking-[0.8em] uppercase border-y border-white/5 py-5 px-10">
+                <span className="relative z-20 text-white/60 font-light text-[10px] animate-pulse tracking-[0.8em] uppercase border-y border-white/5 py-5 px-10 text-center">
                     Click to enter
                 </span>
             </div>
@@ -240,33 +237,34 @@ export default function App() {
     }
 
     return (
-        <main className="min-h-screen w-screen flex items-center justify-center p-8 relative select-none bg-transparent">
+        // Layout principal ajustado para Mobile (w-full, overflow-x-hidden e pb-40 para o player não cobrir nada)
+        <main className="min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-8 relative select-none bg-transparent overflow-x-hidden pb-40">
             <BackgroundEffects />
             
-            {/* CONTROLES DE MÚSICA - Vidro removido aqui também para combinar, mas mantendo legibilidade */}
+            {/* CONTROLES DE MÚSICA - Responsivo para Celular */}
             <div 
-                className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group"
+                className="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group w-[90%] max-w-[400px]"
                 onClick={(e) => e.stopPropagation()} 
             >
-                <div className="flex items-center gap-3">
-                    <button onClick={togglePlay} className="text-white/80 hover:text-white transition-colors">
+                <div className="flex items-center gap-3 w-full justify-center">
+                    <button onClick={togglePlay} className="text-white/80 hover:text-white transition-colors p-2">
                         {isPlaying ? (
-                            <img src="https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png" className="w-4 h-4" alt="pause" />
+                            <img src="https://img.icons8.com/ios-filled/50/ffffff/pause--v1.png" className="w-5 h-5" alt="pause" />
                         ) : (
-                            <img src="https://img.icons8.com/ios-filled/50/ffffff/play--v1.png" className="w-4 h-4" alt="play" />
+                            <img src="https://img.icons8.com/ios-filled/50/ffffff/play--v1.png" className="w-5 h-5" alt="play" />
                         )}
                     </button>
                     
-                    <div className="flex flex-col">
+                    <div className="flex flex-col truncate">
                         <span className="text-[8px] text-white/40 uppercase tracking-widest">
                             {isPlaying ? "Playing:" : "Paused:"}
                         </span>
-                        <span className="text-xs text-white/80 font-medium tracking-wider">{musicName}</span>
+                        <span className="text-xs text-white/80 font-medium tracking-wider truncate max-w-[200px]">{musicName}</span>
                     </div>
                 </div>
                 
-                <div className="flex items-center gap-3 w-48">
-                    <img src="https://img.icons8.com/ios-filled/50/ffffff/low-volume.png" className="w-3 h-3 opacity-40" alt="vol-down" />
+                <div className="flex items-center gap-3 w-full px-2">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/low-volume.png" className="w-4 h-4 opacity-40" alt="vol-down" />
                     <input 
                         type="range" 
                         min="0" 
@@ -277,13 +275,14 @@ export default function App() {
                         onPointerDown={(e) => e.stopPropagation()} 
                         onMouseDown={(e) => e.stopPropagation()}
                         style={{ touchAction: 'none' }} 
-                        className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                        className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500 touch-none"
                     />
-                    <img src="https://img.icons8.com/?size=100&id=11475&format=png&color=ffffff" className="w-3 h-3 opacity-40" alt="vol-up" />
+                    <img src="https://img.icons8.com/?size=100&id=11475&format=png&color=ffffff" className="w-4 h-4 opacity-40" alt="vol-up" />
                 </div>
             </div>
 
-            <div className="flex flex-wrap justify-center items-center gap-8 max-w-6xl mx-auto relative z-20">
+            {/* Grid de Cards - Ajustado espaçamento */}
+            <div className="flex flex-wrap justify-center items-center gap-8 w-full max-w-6xl mx-auto relative z-20">
                 {USERS_DATA.map(user => (
                     <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
                 ))}
