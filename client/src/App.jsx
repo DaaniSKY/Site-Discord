@@ -81,7 +81,6 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         setRotate({ x: 0, y: 0 });
     };
 
-    // Ajustei a largura para w-60 para caber melhor no layout lado a lado
     if (!data) return <div className="w-60 h-80 flex-shrink-0 animate-pulse rounded-2xl border-2 border-white/10 snap-center" />;
 
     return (
@@ -287,15 +286,23 @@ export default function App() {
             <div className="hide-scroll w-full overflow-x-auto p-12 snap-x snap-mandatory">
                 
                 {/* CONTAINER INTERNO (Centralização inteligente) */}
-                {/* w-max faz ele ter a largura exata do conteúdo. */}
-                {/* mx-auto faz ele centralizar SE for menor que a tela. */}
-                {/* Se for maior, ele apenas alinha à esquerda e deixa rolar. */}
                 <div className="flex gap-6 w-max mx-auto">
                     {USERS_DATA.map(user => (
                         <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
                     ))}
                 </div>
             </div>
+
+            {/* --- SEU NOME/LINK NO RODAPÉ --- */}
+            <a 
+                href="https://discord.gg/reallsd" 
+                target="_blank" 
+                rel="noreferrer"
+                className="mt-4 text-white/40 hover:text-white transition-colors text-xs tracking-[0.2em] uppercase z-20 cursor-pointer"
+            >
+                By LSD
+            </a>
+
         </main>
     );
 }
