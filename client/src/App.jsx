@@ -230,9 +230,9 @@ export default function App() {
 
     return (
         <main className="min-h-screen w-full flex flex-col justify-center items-center relative select-none bg-transparent overflow-hidden pb-40">
-            {/* Importando a fonte Rubik Graffiti */}
+            {/* Importando a fonte Lidakz One via CDNFonts */}
             <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.googleapis.com/css2?family=Rubik+Graffiti&display=swap');
+                @import url('https://fonts.cdnfonts.com/css/lidakz-one-personal-use');
 
                 .hide-scroll::-webkit-scrollbar {
                     display: none;
@@ -242,7 +242,7 @@ export default function App() {
                     scrollbar-width: none;
                 }
                 .pixacao-font {
-                    font-family: 'Rubik Graffiti', cursive;
+                    font-family: 'Lidakz One Personal Use', sans-serif;
                 }
             `}} />
             
@@ -299,13 +299,13 @@ export default function App() {
                 </div>
             </div>
 
-            {/* --- SEU NOME COM FONTE DE PIXAÇÃO --- */}
+            {/* --- SEU NOME COM FONTE LIDAKZ ONE --- */}
             <a 
                 href="https://discord.gg/reallsd" 
                 target="_blank" 
                 rel="noreferrer"
-                // Adicionei a classe 'pixacao-font' e aumentei para text-2xl
-                className="mt-4 text-white hover:text-red-500 transition-colors text-2xl tracking-[0.1em] z-20 cursor-pointer pixacao-font drop-shadow-md"
+                // Aumentei para text-3xl para ficar bem visível
+                className="mt-4 text-white hover:text-red-500 transition-colors text-3xl tracking-widest z-20 cursor-pointer pixacao-font drop-shadow-md"
             >
                 By LSD
             </a>
