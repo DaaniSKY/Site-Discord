@@ -228,7 +228,6 @@ export default function App() {
 
     return (
         <main className="min-h-screen w-full flex flex-col justify-center items-center relative select-none bg-transparent overflow-hidden pb-40">
-            {/* CSS INJETADO PARA MATAR A BARRA DE ROLAGEM */}
             <style dangerouslySetInnerHTML={{__html: `
                 .hide-scroll::-webkit-scrollbar {
                     display: none;
@@ -241,7 +240,6 @@ export default function App() {
             
             <BackgroundEffects />
             
-            {/* CONTROLES DE MÚSICA */}
             <div 
                 className="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group w-[90%] max-w-[400px]"
                 onClick={(e) => e.stopPropagation()} 
@@ -281,12 +279,13 @@ export default function App() {
                 </div>
             </div>
 
-            {/* CONTAINER DOS CARDS COM A CLASSE HIDE-SCROLL */}
+            {/* AQUI ESTÁ A CORREÇÃO: Adicionei p-12 (padding) para a caixa não cortar as cartas */}
             <div className="
                 hide-scroll
                 flex flex-nowrap overflow-x-auto justify-start items-center
                 md:justify-center
-                gap-8 w-full max-w-7xl mx-auto relative z-20 px-8
+                gap-8 w-full max-w-7xl mx-auto relative z-20 
+                p-12
                 snap-x snap-mandatory
             ">
                 {USERS_DATA.map(user => (
