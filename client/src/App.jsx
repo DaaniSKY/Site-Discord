@@ -301,12 +301,12 @@ export default function App() {
 
             {/* NOME NO RODAPÉ */}
             <a 
-                href="https://instagram.com/daanisky" 
+                href="https://discord.gg/reallsd" 
                 target="_blank" 
                 rel="noreferrer"
                 className="mt-4 text-white hover:text-red-500 transition-colors text-3xl tracking-widest z-20 cursor-pointer pixacao-font drop-shadow-md"
             >
-                By DaaniSKY
+                By LSD
             </a>
 
         </main>
