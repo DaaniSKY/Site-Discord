@@ -39,7 +39,7 @@ const BADGE_ICONS = {
 const USERS_DATA = [
     { id: "1418117655293857875", insta: "https://instagram.com/daanisky", badges: ["Nitro1month", "HypeSquadBravery", "BoostLevel1", "QuestCompleted", "OrbsApprentice"] },
     { id: "1075542224730853479", insta: "https://instagram.com/memoriassepultadas", badges: [] },
-    { id: "1466230736586805359", insta: "https://instagram.com/user3", badges: ["Nitro", "BoostLevel1"] },
+    { id: "1466230736586805359", insta: "https://www.instagram.com/theworldisnotfair1", badges: ["Nitro", "BoostLevel1"] },
     { id: "1243923826106961946", insta: "https://instagram.com/zxtworm", badges: ["Nitro", "BoostLevel1"] },
 ];
 
