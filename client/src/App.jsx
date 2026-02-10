@@ -230,13 +230,19 @@ export default function App() {
 
     return (
         <main className="min-h-screen w-full flex flex-col justify-center items-center relative select-none bg-transparent overflow-hidden pb-40">
+            {/* Importando a fonte Rubik Graffiti */}
             <style dangerouslySetInnerHTML={{__html: `
+                @import url('https://fonts.googleapis.com/css2?family=Rubik+Graffiti&display=swap');
+
                 .hide-scroll::-webkit-scrollbar {
                     display: none;
                 }
                 .hide-scroll {
                     -ms-overflow-style: none;
                     scrollbar-width: none;
+                }
+                .pixacao-font {
+                    font-family: 'Rubik Graffiti', cursive;
                 }
             `}} />
             
@@ -293,12 +299,13 @@ export default function App() {
                 </div>
             </div>
 
-            {/* --- SEU NOME/LINK NO RODAPÉ --- */}
+            {/* --- SEU NOME COM FONTE DE PIXAÇÃO --- */}
             <a 
                 href="https://discord.gg/reallsd" 
                 target="_blank" 
                 rel="noreferrer"
-                className="mt-4 text-white/80 hover:text-white transition-colors text-lg tracking-[0.2em] uppercase z-20 cursor-pointer font-bold"
+                // Adicionei a classe 'pixacao-font' e aumentei para text-2xl
+                className="mt-4 text-white hover:text-red-500 transition-colors text-2xl tracking-[0.1em] z-20 cursor-pointer pixacao-font drop-shadow-md"
             >
                 By LSD
             </a>
