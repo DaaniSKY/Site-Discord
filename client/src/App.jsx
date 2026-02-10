@@ -61,7 +61,6 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         fetchData();
     }, [userId, manualBadges]);
 
-    // Lógica de movimento 3D (PC)
     const handleMouseMove = (e) => {
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
@@ -80,7 +79,6 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         setRotate({ x: 0, y: 0 });
     };
 
-    // Skeleton
     if (!data) return <div className="w-64 h-80 flex-shrink-0 animate-pulse rounded-2xl border-2 border-white/10 snap-center" />;
 
     return (
@@ -93,9 +91,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
             <div 
                 className={`
                     relative w-full h-full rounded-2xl p-8 flex flex-col items-center
-                    /* Borda Transparente */
                     border-2 border-white/20 group-hover:border-white
-                    /* Transição */
                     transition-all ease-out
                     ${isHovering ? 'duration-75' : 'duration-500'}
                 `}
@@ -140,7 +136,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 };
 
 const BackgroundEffects = memo(() => {
-    const stars = useRef([...Array(80)].map(() => ({
+    const stars = useRef([...Array(500)].map(() => ({
         width: Math.random() * 2 + 'px',
         top: Math.random() * 100 + '%',
         left: Math.random() * 100 + '%',
@@ -232,6 +228,17 @@ export default function App() {
 
     return (
         <main className="min-h-screen w-full flex flex-col justify-center items-center relative select-none bg-transparent overflow-hidden pb-40">
+            {/* CSS INJETADO PARA MATAR A BARRA DE ROLAGEM */}
+            <style dangerouslySetInnerHTML={{__html: `
+                .hide-scroll::-webkit-scrollbar {
+                    display: none;
+                }
+                .hide-scroll {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}} />
+            
             <BackgroundEffects />
             
             {/* CONTROLES DE MÚSICA */}
@@ -274,16 +281,13 @@ export default function App() {
                 </div>
             </div>
 
-            {/* --- CONTAINER DOS CARDS --- */}
+            {/* CONTAINER DOS CARDS COM A CLASSE HIDE-SCROLL */}
             <div className="
-                /* GLOBAL (Mobile + PC): Linha única (nowrap), scrollável (overflow-x-auto) */
+                hide-scroll
                 flex flex-nowrap overflow-x-auto justify-start items-center
-                
-                /* PC: Centraliza se tiver espaço (mas NÃO quebra linha) */
                 md:justify-center
-                
                 gap-8 w-full max-w-7xl mx-auto relative z-20 px-8
-                snap-x snap-mandatory scrollbar-hide
+                snap-x snap-mandatory
             ">
                 {USERS_DATA.map(user => (
                     <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
