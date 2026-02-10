@@ -39,7 +39,7 @@ const BADGE_ICONS = {
 const USERS_DATA = [
     { id: "1418117655293857875", insta: "https://instagram.com/daanisky", badges: ["Nitro1month", "HypeSquadBravery", "BoostLevel1", "QuestCompleted", "OrbsApprentice"] },
     { id: "1075542224730853479", insta: "https://instagram.com/memoriassepultadas", badges: [] },
-    { id: "1466230736586805359", insta: "https://www.instagram.com/theworldisnotfair1", badges: ["Nitro", "BoostLevel1"] },
+    { id: "1466230736586805359", insta: "https://instagram.com/user3", badges: ["Nitro", "BoostLevel1"] },
     { id: "1243923826106961946", insta: "https://instagram.com/zxtworm", badges: ["Nitro", "BoostLevel1"] },
 ];
 
@@ -79,11 +79,12 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         setRotate({ x: 0, y: 0 });
     };
 
-    if (!data) return <div className="w-64 h-80 flex-shrink-0 animate-pulse rounded-2xl border-2 border-white/10 snap-center" />;
+    // Ajustei a largura para w-60 para caber melhor no layout lado a lado
+    if (!data) return <div className="w-60 h-80 flex-shrink-0 animate-pulse rounded-2xl border-2 border-white/10 snap-center" />;
 
     return (
         <div 
-            className="relative w-64 h-80 perspective-[1000px] group z-20 cursor-pointer flex-shrink-0 snap-center"
+            className="relative w-60 h-80 perspective-[1000px] group z-20 cursor-pointer flex-shrink-0 snap-center"
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -136,7 +137,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 };
 
 const BackgroundEffects = memo(() => {
-    const stars = useRef([...Array(500)].map(() => ({
+    const stars = useRef([...Array(80)].map(() => ({
         width: Math.random() * 2 + 'px',
         top: Math.random() * 100 + '%',
         left: Math.random() * 100 + '%',
@@ -240,6 +241,7 @@ export default function App() {
             
             <BackgroundEffects />
             
+            {/* CONTROLES DE MÚSICA */}
             <div 
                 className="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group w-[90%] max-w-[400px]"
                 onClick={(e) => e.stopPropagation()} 
@@ -279,18 +281,18 @@ export default function App() {
                 </div>
             </div>
 
-            {/* AQUI ESTÁ A CORREÇÃO: Adicionei p-12 (padding) para a caixa não cortar as cartas */}
-            <div className="
-                hide-scroll
-                flex flex-nowrap overflow-x-auto justify-start items-center
-                md:justify-center
-                gap-8 w-full max-w-7xl mx-auto relative z-20 
-                p-12
-                snap-x snap-mandatory
-            ">
-                {USERS_DATA.map(user => (
-                    <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
-                ))}
+            {/* CONTAINER EXTERNO (Scrollável) */}
+            <div className="hide-scroll w-full overflow-x-auto p-12 snap-x snap-mandatory">
+                
+                {/* CONTAINER INTERNO (Centralização inteligente) */}
+                {/* w-max faz ele ter a largura exata do conteúdo. */}
+                {/* mx-auto faz ele centralizar SE for menor que a tela. */}
+                {/* Se for maior, ele apenas alinha à esquerda e deixa rolar. */}
+                <div className="flex gap-6 w-max mx-auto">
+                    {USERS_DATA.map(user => (
+                        <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
+                    ))}
+                </div>
             </div>
         </main>
     );
