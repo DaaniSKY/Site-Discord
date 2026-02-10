@@ -1,5 +1,8 @@
 import { useEffect, useState, useRef, memo } from 'react';
 
+// Importante: A música deve estar na pasta /client/public/musica.mp3
+// O nome do arquivo tem que ser EXATAMENTE igual (cuidado com letras maiúsculas)
+
 // --- MAPEAMENTO DE ÍCONES ---
 const BADGE_ICONS = {
     ActiveDeveloper: "https://raw.githubusercontent.com/mezotv/discord-badges/main/assets/activedeveloper.svg",
@@ -51,7 +54,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // SEU LINK DO RENDER AQUI
+                // Link do seu Render
                 const res = await fetch(`https://site-discord.onrender.com/user/${userId}`);
                 const json = await res.json();
                 setData({ ...json, badges: manualBadges });
@@ -80,8 +83,8 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         setRotate({ x: 0, y: 0 });
     };
 
-    // Card Skeleton com efeito de vidro
-    if (!data) return <div className="w-64 h-80 animate-pulse rounded-2xl border-2 border-white/10 bg-white/5 backdrop-blur-md" />;
+    // Skeleton totalmente transparente
+    if (!data) return <div className="w-64 h-80 animate-pulse rounded-2xl border-2 border-white/10" />;
 
     return (
         <div 
@@ -94,11 +97,10 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
                 className={`
                     relative w-full h-full rounded-2xl p-8 flex flex-col items-center
                     
-                    /* EFEITO DE VIDRO */
-                    bg-white/5 backdrop-blur-md 
-                    group-hover:bg-white/10
-
-                    /* BORDA */
+                    /* --- REMOVIDO EFEITO DE VIDRO/FUNDO --- */
+                    /* Agora é 100% transparente, só a borda aparece */
+                    
+                    /* Borda */
                     border-2 border-white/20 group-hover:border-white
                     
                     /* Transição */
@@ -146,7 +148,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 };
 
 const BackgroundEffects = memo(() => {
-    const stars = useRef([...Array(80)].map(() => ({
+    const stars = useRef([...Array(500)].map(() => ({
         width: Math.random() * 2 + 'px',
         top: Math.random() * 100 + '%',
         left: Math.random() * 100 + '%',
@@ -179,10 +181,14 @@ export default function App() {
     const musicName = "Lil Peep - Hellboy";
 
     useEffect(() => {
-        // O caminho '/musica.mp3' busca direto na pasta public
+        // Tenta pegar o arquivo. Se falhar, avisa no console.
         audioRef.current = new Audio('/musica.mp3');
         audioRef.current.loop = true;
         audioRef.current.volume = volume;
+        
+        audioRef.current.addEventListener('error', (e) => {
+            console.error("ERRO NO PLAYER: Não foi possível carregar '/musica.mp3'. Verifique se o arquivo está na pasta 'public' e se o nome está em minúsculo.", e);
+        });
 
         return () => {
             if (audioRef.current) {
@@ -196,7 +202,7 @@ export default function App() {
         if (audioRef.current) {
             audioRef.current.play()
                 .then(() => setIsPlaying(true))
-                .catch(e => console.log("Erro ao tocar:", e));
+                .catch(e => console.log("Erro ao tocar (navegador bloqueou ou arquivo não existe):", e));
         }
         setStarted(true);
     };
@@ -237,9 +243,9 @@ export default function App() {
         <main className="min-h-screen w-screen flex items-center justify-center p-8 relative select-none bg-transparent">
             <BackgroundEffects />
             
-            {/* CONTROLES DE MÚSICA COM EFEITO DE VIDRO */}
+            {/* CONTROLES DE MÚSICA - Vidro removido aqui também para combinar, mas mantendo legibilidade */}
             <div 
-                className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/30 backdrop-blur-md border border-white/10 p-4 rounded-xl z-[100] group"
+                className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group"
                 onClick={(e) => e.stopPropagation()} 
             >
                 <div className="flex items-center gap-3">
