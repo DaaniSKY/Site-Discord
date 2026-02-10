@@ -53,7 +53,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Seu Link do Render
+                // Link do seu Render
                 const res = await fetch(`https://site-discord.onrender.com/user/${userId}`);
                 const json = await res.json();
                 setData({ ...json, badges: manualBadges });
@@ -64,7 +64,7 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
         fetchData();
     }, [userId, manualBadges]);
 
-    // Lógica de movimento 3D (só afeta PC/Mouse)
+    // Lógica de movimento 3D
     const handleMouseMove = (e) => {
         const card = e.currentTarget;
         const rect = card.getBoundingClientRect();
@@ -88,11 +88,11 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 
     return (
         <div 
+            // AQUI ESTAVA O ERRO: Removi 'touch-none'. Agora o scroll funciona.
             className="relative w-64 h-80 perspective-[1000px] group z-20 cursor-pointer"
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            // No mobile, o toque não vai ativar o 3D agressivo, permitindo scroll
         >
             <div 
                 className={`
@@ -237,11 +237,11 @@ export default function App() {
     }
 
     return (
-        // Layout principal ajustado para Mobile (w-full, overflow-x-hidden e pb-40 para o player não cobrir nada)
-        <main className="min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-8 relative select-none bg-transparent overflow-x-hidden pb-40">
+        // Principal alteração: Layout que permite scroll
+        <main className="min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-8 relative select-none bg-transparent pb-40">
             <BackgroundEffects />
             
-            {/* CONTROLES DE MÚSICA - Responsivo para Celular */}
+            {/* CONTROLES DE MÚSICA */}
             <div 
                 className="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 bg-black/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl z-[100] group w-[90%] max-w-[400px]"
                 onClick={(e) => e.stopPropagation()} 
@@ -281,7 +281,7 @@ export default function App() {
                 </div>
             </div>
 
-            {/* Grid de Cards - Ajustado espaçamento */}
+            {/* Grid de Cards */}
             <div className="flex flex-wrap justify-center items-center gap-8 w-full max-w-6xl mx-auto relative z-20">
                 {USERS_DATA.map(user => (
                     <DiscordUser key={user.id} userId={user.id} instagramUrl={user.insta} manualBadges={user.badges} />
