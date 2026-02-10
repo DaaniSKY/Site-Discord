@@ -298,7 +298,7 @@ export default function App() {
                 href="https://discord.gg/reallsd" 
                 target="_blank" 
                 rel="noreferrer"
-                className="mt-4 text-white/40 hover:text-white transition-colors text-xs tracking-[0.2em] uppercase z-20 cursor-pointer"
+                className="mt-4 text-white/80 hover:text-white transition-colors text-lg tracking-[0.2em] uppercase z-20 cursor-pointer font-bold"
             >
                 By LSD
             </a>
