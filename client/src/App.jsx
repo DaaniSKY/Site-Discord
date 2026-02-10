@@ -230,9 +230,9 @@ export default function App() {
 
     return (
         <main className="min-h-screen w-full flex flex-col justify-center items-center relative select-none bg-transparent overflow-hidden pb-40">
-            {/* Importando a fonte Lidakz One via CDNFonts */}
+            {/* Importando a fonte ANOTHER TAG via CDNFonts */}
             <style dangerouslySetInnerHTML={{__html: `
-                @import url('https://fonts.cdnfonts.com/css/lidakz-one-personal-use');
+                @import url('https://fonts.cdnfonts.com/css/another-tag');
 
                 .hide-scroll::-webkit-scrollbar {
                     display: none;
@@ -242,7 +242,7 @@ export default function App() {
                     scrollbar-width: none;
                 }
                 .pixacao-font {
-                    font-family: 'Lidakz One Personal Use', sans-serif;
+                    font-family: 'Another Tag', sans-serif;
                 }
             `}} />
             
@@ -299,12 +299,12 @@ export default function App() {
                 </div>
             </div>
 
-            {/* --- SEU NOME COM FONTE LIDAKZ ONE --- */}
+            {/* --- SEU NOME COM FONTE ANOTHER TAG --- */}
             <a 
-                href="https://discord.gg/reallsd" 
+                href="https://discord.gg/lsd" 
                 target="_blank" 
                 rel="noreferrer"
-                // Aumentei para text-3xl para ficar bem visível
+                // text-3xl mantém um tamanho bom
                 className="mt-4 text-white hover:text-red-500 transition-colors text-3xl tracking-widest z-20 cursor-pointer pixacao-font drop-shadow-md"
             >
                 By LSD
