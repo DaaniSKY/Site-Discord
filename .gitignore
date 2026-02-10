@@ -1,0 +1,12 @@
+# Pastas pesadas (não subir)
+node_modules/
+**/node_modules/
+
+# Arquivos de segurança (NUNCA SUBIR)
+.env
+.env.local
+
+# Arquivos de build (o site cria isso sozinho na Vercel)
+dist/
+build/
+.DS_Store

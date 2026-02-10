@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-black overflow-hidden;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+}
