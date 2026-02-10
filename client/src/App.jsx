@@ -51,7 +51,6 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Link do seu Render
                 const res = await fetch(`https://site-discord.onrender.com/user/${userId}`);
                 const json = await res.json();
                 setData({ ...json, badges: manualBadges });
@@ -86,7 +85,6 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
 
     return (
         <div 
-            // Adicionado 'flex-shrink-0' e 'snap-center' para o carrossel mobile funcionar
             className="relative w-64 h-80 perspective-[1000px] group z-20 cursor-pointer flex-shrink-0 snap-center"
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
@@ -95,10 +93,8 @@ const DiscordUser = ({ userId, instagramUrl, manualBadges }) => {
             <div 
                 className={`
                     relative w-full h-full rounded-2xl p-8 flex flex-col items-center
-                    
                     /* Borda Transparente */
                     border-2 border-white/20 group-hover:border-white
-                    
                     /* Transição */
                     transition-all ease-out
                     ${isHovering ? 'duration-75' : 'duration-500'}
@@ -278,14 +274,15 @@ export default function App() {
                 </div>
             </div>
 
-            {/* --- CARROSSEL RESPONSIVO --- */}
+            {/* --- CONTAINER DOS CARDS --- */}
             <div className="
-                /* MOBILE: Horizontal (flex), sem quebra (nowrap), scrollável (overflow-x-auto) */
+                /* GLOBAL (Mobile + PC): Linha única (nowrap), scrollável (overflow-x-auto) */
                 flex flex-nowrap overflow-x-auto justify-start items-center
-                /* PC: Quebra linha (flex-wrap), centralizado (justify-center) */
-                md:flex-wrap md:justify-center md:overflow-visible
                 
-                gap-8 w-full max-w-6xl mx-auto relative z-20 px-8
+                /* PC: Centraliza se tiver espaço (mas NÃO quebra linha) */
+                md:justify-center
+                
+                gap-8 w-full max-w-7xl mx-auto relative z-20 px-8
                 snap-x snap-mandatory scrollbar-hide
             ">
                 {USERS_DATA.map(user => (
